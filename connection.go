@@ -19,6 +19,12 @@ var ConnectionArgs = graphql.FieldConfigArgument{
 	"last": &graphql.ArgumentConfig{
 		Type: graphql.Int,
 	},
+	"offset": &graphql.ArgumentConfig{
+		Type: graphql.Int,
+	},
+	"limit": &graphql.ArgumentConfig{
+		Type: graphql.Int,
+	},
 }
 
 func NewConnectionArgs(configMap graphql.FieldConfigArgument) graphql.FieldConfigArgument {
@@ -66,6 +72,14 @@ var pageInfoType = graphql.NewObject(graphql.ObjectConfig{
 		"endCursor": &graphql.Field{
 			Type:        graphql.String,
 			Description: "When paginating forwards, the cursor to continue.",
+		},
+		"offset": &graphql.Field{
+			Type:        graphql.Int,
+			Description: "The used value of offset.",
+		},
+		"limit": &graphql.Field{
+			Type:        graphql.Int,
+			Description: "The used value of limit.",
 		},
 	},
 })

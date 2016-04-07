@@ -64,6 +64,16 @@ func ConnectionFromArraySlice(
 	begin := max(startOffset-meta.SliceStart, 0)
 	end := len(arraySlice) - (sliceEnd - endOffset)
 
+	if args.Offset > 0 {
+		begin = args.Offset
+	}
+	if args.Limit > 0 {
+		end = begin + args.Limit
+		if end > len(arraySlice) {
+			end = len(arraySlice)
+		}
+	}
+
 	if begin > end {
 		return NewConnection()
 	}
@@ -111,6 +121,8 @@ func ConnectionFromArraySlice(
 		EndCursor:       lastEdgeCursor,
 		HasPreviousPage: hasPreviousPage,
 		HasNextPage:     hasNextPage,
+		Limit:           args.Limit,
+		Offset:          args.Offset,
 	}
 
 	return conn
