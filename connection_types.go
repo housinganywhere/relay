@@ -62,7 +62,7 @@ func NewConnectionArguments(filters map[string]interface{}) ConnectionArguments 
 		Before: "",
 		After:  "",
 		Offset: -1,
-		Limit:  25,
+		Limit:  -1,
 	}
 	if filters != nil {
 		if first, ok := filters["first"]; ok {

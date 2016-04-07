@@ -31,14 +31,17 @@ func ConnectionFromArray(data []interface{}, args ConnectionArguments) *Connecti
 	beforeOffset := getOffset(args.Before, len(edges)+1)
 
 	var begin, end int
-	if args.Offset > 0 && args.Limit > 0 {
+	if args.Offset > 0 {
 		begin = args.Offset
+	} else {
+		begin = int(math.Max(float64(afterOffset), -1) + 1)
+	}
+	if args.Limit > 0 {
 		end = begin + args.Limit
 		if end > len(edges) {
 			end = len(edges)
 		}
 	} else {
-		begin = int(math.Max(float64(afterOffset), -1) + 1)
 		end = int(math.Min(float64(beforeOffset), float64(len(edges))))
 	}
 
