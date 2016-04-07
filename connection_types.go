@@ -11,6 +11,8 @@ type PageInfo struct {
 	EndCursor       ConnectionCursor `json:"endCursor"`
 	HasPreviousPage bool             `json:"hasPreviousPage"`
 	HasNextPage     bool             `json:"hasNextPage"`
+	Offset          int              `json:"offset"`
+	Limit           int              `json:"limit"`
 }
 
 type Connection struct {
@@ -36,8 +38,10 @@ type Edge struct {
 type ConnectionArguments struct {
 	Before ConnectionCursor `json:"before"`
 	After  ConnectionCursor `json:"after"`
-	First  int              `json:"first"` // -1 for undefined, 0 would return zero results
-	Last   int              `json:"last"`  //  -1 for undefined, 0 would return zero results
+	First  int              `json:"first"`  // -1 for undefined, 0 would return zero results
+	Last   int              `json:"last"`   // -1 for undefined, 0 would return zero results
+	Offset int              `json:"offset"` // -1 for undefined
+	Limit  int              `json:"limit"`  // -1 for undefined
 }
 type ConnectionArgumentsConfig struct {
 	Before ConnectionCursor `json:"before"`
@@ -45,8 +49,10 @@ type ConnectionArgumentsConfig struct {
 
 	// use pointers for `First` and `Last` fields
 	// so constructor would know when to use default values
-	First *int `json:"first"`
-	Last  *int `json:"last"`
+	First  *int `json:"first"`
+	Last   *int `json:"last"`
+	Offset *int `json:"offset"`
+	Limit  *int `json:"limit"`
 }
 
 func NewConnectionArguments(filters map[string]interface{}) ConnectionArguments {
@@ -55,6 +61,8 @@ func NewConnectionArguments(filters map[string]interface{}) ConnectionArguments 
 		Last:   -1,
 		Before: "",
 		After:  "",
+		Offset: -1,
+		Limit:  25,
 	}
 	if filters != nil {
 		if first, ok := filters["first"]; ok {
@@ -72,6 +80,16 @@ func NewConnectionArguments(filters map[string]interface{}) ConnectionArguments 
 		}
 		if after, ok := filters["after"]; ok {
 			conn.After = ConnectionCursor(fmt.Sprintf("%v", after))
+		}
+		if offset, ok := filters["offset"]; ok {
+			if offset, ok := offset.(int); ok {
+				conn.Offset = offset
+			}
+		}
+		if limit, ok := filters["limit"]; ok {
+			if limit, ok := limit.(int); ok {
+				conn.Limit = limit
+			}
 		}
 	}
 	return conn

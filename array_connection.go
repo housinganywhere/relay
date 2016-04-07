@@ -30,13 +30,23 @@ func ConnectionFromArray(data []interface{}, args ConnectionArguments) *Connecti
 	afterOffset := getOffset(args.After, -1)
 	beforeOffset := getOffset(args.Before, len(edges)+1)
 
-	begin := int(math.Max(float64(afterOffset), -1) + 1)
-	end := int(math.Min(float64(beforeOffset), float64(len(edges))))
+	var begin, end int
+	if args.Offset > 0 && args.Limit > 0 {
+		begin = args.Offset
+		end = begin + args.Limit
+		if end > len(edges) {
+			end = len(edges)
+		}
+	} else {
+		begin = int(math.Max(float64(afterOffset), -1) + 1)
+		end = int(math.Min(float64(beforeOffset), float64(len(edges))))
+	}
+
 	if begin > end {
 		return NewConnection()
 	}
-
 	edges = edges[begin:end]
+
 	if len(edges) == 0 {
 		return NewConnection()
 	}
@@ -77,6 +87,8 @@ func ConnectionFromArray(data []interface{}, args ConnectionArguments) *Connecti
 		EndCursor:       lastEdge.Cursor,
 		HasPreviousPage: hasPreviousPage,
 		HasNextPage:     hasNextPage,
+		Limit:           args.Limit,
+		Offset:          args.Offset,
 	}
 	return conn
 }
