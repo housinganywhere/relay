@@ -1,6 +1,7 @@
 package relay_test
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/housinganywhere/graphql"
@@ -8,7 +9,6 @@ import (
 	"github.com/housinganywhere/graphql/language/location"
 	"github.com/housinganywhere/graphql/testutil"
 	"github.com/housinganywhere/relay"
-	"golang.org/x/net/context"
 	"reflect"
 	"testing"
 )

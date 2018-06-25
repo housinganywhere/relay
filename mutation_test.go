@@ -1,6 +1,7 @@
 package relay_test
 
 import (
+	"context"
 	"errors"
 	"reflect"
 	"testing"
@@ -11,7 +12,6 @@ import (
 	"github.com/housinganywhere/graphql/language/location"
 	"github.com/housinganywhere/graphql/testutil"
 	"github.com/housinganywhere/relay"
-	"golang.org/x/net/context"
 )
 
 func testAsyncDataMutation(resultChan *chan int) {

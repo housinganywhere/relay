@@ -1,10 +1,10 @@
 package starwars
 
 import (
+	"context"
 	"errors"
 	"github.com/housinganywhere/graphql"
 	"github.com/housinganywhere/relay"
-	"golang.org/x/net/context"
 )
 
 /**
